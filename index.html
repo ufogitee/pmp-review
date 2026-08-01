@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="软考高项 · 八大项目绩效域紧凑复习板" />
-    <title>高项 · 八大绩效域复习板</title>
+    <meta name="description" content="软考高项 · 八大绩效域与十大知识领域紧凑复习板" />
+    <title>高项复习板</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -13,15 +13,22 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body class="mode-overview">
+  <body class="mode-overview" data-module="perf">
     <div class="app">
       <header class="topbar">
         <div class="brand">
-          <h1>八大绩效域复习板</h1>
-          <div class="sub">软考高项 · PMBOK7 / 教程第4版 · 一屏紧凑背诵</div>
-          <div class="mnemonic" id="mnemonic"></div>
+          <h1>高项复习板</h1>
+          <div class="sub">软考高项 · 绩效域 / 知识领域 · 一屏紧凑背诵</div>
+          <div class="mnemonic-row">
+            <span class="mnemonic" id="mnemonic"></span>
+            <span class="mnemonic-note" id="mnemonic-note"></span>
+          </div>
         </div>
         <div class="controls">
+          <div class="module-switch" role="tablist" aria-label="模块切换">
+            <button type="button" class="module-btn active" data-module="perf">绩效域</button>
+            <button type="button" class="module-btn" data-module="ka">知识领域</button>
+          </div>
           <button type="button" class="mode-btn active" data-mode="overview">总览</button>
           <button type="button" class="mode-btn" data-mode="collapse">折叠</button>
           <button type="button" class="mode-btn" data-mode="quiz">自测</button>
@@ -34,18 +41,20 @@
         </div>
       </header>
 
-      <nav class="domain-nav" id="domain-nav" aria-label="绩效域导航"></nav>
+      <nav class="domain-nav" id="domain-nav" data-module="perf" aria-label="条目导航"></nav>
 
       <main class="panel" id="main"></main>
+      <p class="search-empty hidden" id="search-empty">当前模块无匹配，可切换另一模块再搜</p>
 
       <footer class="footer">
-        快捷键：<kbd>1</kbd>–<kbd>8</kbd> 切换绩效域 ·
-        <kbd>Q</kbd> 总览 · <kbd>W</kbd> 折叠 · <kbd>E</kbd> 自测 ·
-        双击打开本文件即可离线复习（首次需联网加载字体）
+        <kbd>A</kbd> 绩效域 · <kbd>S</kbd> 知识领域 ·
+        <kbd>1</kbd>–<kbd>0</kbd> 切换条目 ·
+        <kbd>Q</kbd> 总览 · <kbd>W</kbd> 折叠 · <kbd>E</kbd> 自测
       </footer>
     </div>
 
     <script src="data.js"></script>
+    <script src="knowledge-areas.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

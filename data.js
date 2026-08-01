@@ -569,3 +569,5 @@ window.DOMAIN_DATA = [
 
 /** 速记口诀：干团开规 · 工交度不确 */
 window.MNEMONIC = "干团开规 · 工交度不确";
+window.PERF_DATA = window.DOMAIN_DATA;
+window.PERF_MNEMONIC = window.MNEMONIC;
