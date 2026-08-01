@@ -296,6 +296,385 @@ button {
   width: fit-content;
 }
 
+/* —— Goal ↔ Check pairs (left-right对照) —— */
+.pair-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.pair-heading {
+  margin: 0 0 2px;
+}
+
+.pair-table-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 20px minmax(0, 1.2fr);
+  gap: 6px;
+  padding: 0 10px 2px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.pair-table-head span:first-child {
+  color: var(--accent);
+}
+
+.pair-table-head span:last-child {
+  color: var(--teal);
+}
+
+.pair-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 20px minmax(0, 1.2fr);
+  gap: 6px 8px;
+  align-items: start;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 8px 10px;
+  background: #fafbfc;
+}
+
+.pair-goal {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  padding-left: 8px;
+  border-left: 3px solid var(--accent);
+}
+
+.pair-no {
+  flex: 0 0 auto;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.pair-goal-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.pair-arrow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 2px;
+  color: var(--teal);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.pair-checks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pair-checks li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+  padding: 2px 0;
+  font-size: 12.5px;
+  align-items: baseline;
+}
+
+.pair-checks .ck-label {
+  flex: 0 0 auto;
+  font-weight: 600;
+  color: var(--teal);
+}
+
+.pair-checks .ck-label::after {
+  content: " ·";
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.pair-checks .ck-desc {
+  color: var(--ink-soft);
+}
+
+@media (max-width: 640px) {
+  .pair-table-head {
+    display: none;
+  }
+
+  .pair-card {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .pair-arrow {
+    display: none;
+  }
+
+  .pair-checks {
+    padding-left: 11px;
+    border-left: 3px solid var(--teal);
+  }
+}
+
+/* —— Study diagrams (compact split) —— */
+.diagram-wrap {
+  margin-bottom: 8px;
+}
+
+.diagram {
+  margin: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, #f7fafb 0%, #fff 100%);
+}
+
+.diagram figcaption {
+  margin: 0 0 2px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.diagram-hint {
+  margin: 0 0 6px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.diagram-split-body {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: 10px 14px;
+  align-items: center;
+  min-height: 0;
+}
+
+.diagram-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-height: 150px;
+  overflow: hidden;
+}
+
+.diagram-points {
+  margin: 0;
+  padding-left: 1.1em;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+.diagram-points li + li {
+  margin-top: 3px;
+}
+
+.eq-grid {
+  display: grid;
+  grid-template-columns: 28px 1fr 1fr;
+  gap: 3px;
+  width: 100%;
+  max-width: 220px;
+}
+
+.eq-spacer {
+  min-height: 1px;
+}
+
+.eq-colhead,
+.eq-rowhead {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--teal);
+}
+
+.eq-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 4px 5px;
+  border: 1px solid #c5d8d8;
+  border-radius: 3px;
+  background: #fff;
+  min-height: 0;
+}
+
+.eq-cell strong {
+  font-size: 10.5px;
+  color: var(--accent);
+}
+
+.eq-cell span {
+  font-size: 9.5px;
+  color: var(--ink-soft);
+  line-height: 1.25;
+}
+
+.cycle-svg {
+  width: min(140px, 100%);
+  height: auto;
+  display: block;
+}
+
+.cycle-ring {
+  fill: none;
+  stroke: #d5e3e3;
+  stroke-width: 1.2;
+  stroke-dasharray: 2 2;
+}
+
+.cycle-arc {
+  fill: none;
+  stroke: var(--teal);
+  stroke-width: 1.2;
+}
+
+.cycle-node circle {
+  fill: #e6f3f3;
+  stroke: var(--teal);
+  stroke-width: 1.2;
+}
+
+.cycle-node text {
+  font-size: 8px;
+  font-weight: 700;
+  fill: var(--ink);
+  font-family: var(--font);
+}
+
+.cycle-center {
+  font-size: 10px;
+  font-weight: 700;
+  fill: var(--accent);
+  font-family: var(--font);
+}
+
+.spectrum-bar {
+  display: flex;
+  width: 100%;
+  max-width: 220px;
+  height: 36px;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #c5d8d8;
+}
+
+.spectrum-bar .seg {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #163a3a;
+}
+
+.spectrum-bar .pred {
+  background: #c8e0e0;
+}
+
+.spectrum-bar .hybrid {
+  background: #9ecfcf;
+}
+
+.spectrum-bar .adapt {
+  background: #6bb3b3;
+  color: #fff;
+}
+
+.spectrum-axis {
+  margin: 6px 0 0;
+  font-size: 10px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.mini-svg {
+  width: min(160px, 100%);
+  height: auto;
+  display: block;
+}
+
+.mini-svg .mini-label {
+  font-size: 10px;
+  font-weight: 700;
+  fill: var(--ink);
+  font-family: var(--font);
+}
+
+.mini-svg .mini-note {
+  font-size: 9px;
+  fill: var(--muted);
+  font-family: var(--font);
+}
+
+.mini-svg .blob.a {
+  fill: #d4ecec;
+  stroke: var(--teal);
+  stroke-width: 1.2;
+}
+
+.mini-svg .blob.b {
+  fill: #e8f4f4;
+  stroke: var(--accent);
+  stroke-width: 1.2;
+}
+
+.mini-svg .cone-fill {
+  fill: #d9ecec;
+  stroke: var(--teal);
+  stroke-width: 1.2;
+}
+
+.mini-svg .cone-mid {
+  stroke: var(--accent);
+  stroke-width: 1;
+  stroke-dasharray: 3 2;
+}
+
+.mini-svg .cost-curve {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+.mini-svg .axis {
+  stroke: #c5d0d0;
+  stroke-width: 1;
+}
+
+@media (max-width: 639px) {
+  .diagram-split-body {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .diagram-visual {
+    max-height: 120px;
+  }
+
+  .diagram-points {
+    font-size: 11.5px;
+  }
+}
+
+@media print {
+  .diagram {
+    break-inside: avoid;
+    background: #fff;
+  }
+}
+
 /* —— Compact sections —— */
 .grid-2 {
   display: grid;
@@ -728,11 +1107,28 @@ mark {
     grid-template-columns: repeat(5, 1fr);
   }
 
+  .domain-tab {
+    padding: 6px 2px;
+  }
+
+  .domain-tab .short {
+    font-size: 15px;
+  }
+
   .domain-tab .full {
-    display: none;
+    display: -webkit-box;
+    font-size: 9px;
+    line-height: 1.2;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   .brand h1 {
     font-size: 18px;
+  }
+
+  .eq-grid {
+    max-width: 200px;
   }
 }
