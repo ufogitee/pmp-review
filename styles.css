@@ -308,6 +308,17 @@ button {
   margin: 0 0 2px;
 }
 
+.pair-lead {
+  margin: 0 0 6px;
+  padding: 6px 10px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  background: #f3f8f8;
+  border-left: 3px solid var(--teal);
+  border-radius: 0 4px 4px 0;
+}
+
 .pair-table-head {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 20px minmax(0, 1.2fr);
@@ -651,6 +662,101 @@ button {
 .mini-svg .axis {
   stroke: #c5d0d0;
   stroke-width: 1;
+}
+
+.target-svg .tgt-ring {
+  fill: none;
+  stroke: #b5d0d0;
+  stroke-width: 1.2;
+}
+
+.target-svg .tgt-bull {
+  fill: var(--accent);
+  stroke: none;
+}
+
+.target-svg .tgt-dart {
+  fill: var(--teal);
+  stroke: #0a5555;
+  stroke-width: 0.6;
+}
+
+.leadlag-svg .ll-lead {
+  fill: #d4ecec;
+  stroke: var(--teal);
+  stroke-width: 1.5;
+}
+
+.leadlag-svg .ll-lag {
+  fill: #f0e6e0;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+
+.leadlag-svg .ll-arrow {
+  stroke: #9aafaf;
+  stroke-width: 1.5;
+}
+
+.leadlag-svg .ll-arrow-head {
+  fill: #9aafaf;
+}
+
+.burn-svg .burn-div {
+  stroke: #d5e0e0;
+  stroke-width: 1;
+  stroke-dasharray: 2 2;
+}
+
+.burn-svg .burn-down {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.burn-svg .burn-up {
+  fill: none;
+  stroke: var(--teal);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.task-board {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4px;
+  width: 100%;
+  max-width: 200px;
+}
+
+.task-board .tb-col {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 4px;
+  border: 1px solid #c5d8d8;
+  border-radius: 3px;
+  background: #f7fbfb;
+  min-height: 72px;
+}
+
+.task-board .tb-h {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--teal);
+  text-align: center;
+  margin-bottom: 2px;
+}
+
+.task-board .tb-col i {
+  display: block;
+  height: 8px;
+  border-radius: 2px;
+  background: #d4ecec;
+  border: 1px solid #b5d4d4;
 }
 
 @media (max-width: 639px) {

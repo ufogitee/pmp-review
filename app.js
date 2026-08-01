@@ -23,7 +23,7 @@
   };
 
   const state = {
-    module: "perf",
+    module: "ka",
     itemId: null,
     mode: "overview",
     query: "",
@@ -337,6 +337,93 @@
     );
   }
 
+  function diagramAccuracyPrecision() {
+    const visual = `<svg class="mini-svg target-svg" viewBox="0 0 160 100" aria-hidden="true">
+      <circle cx="80" cy="50" r="38" class="tgt-ring"/>
+      <circle cx="80" cy="50" r="26" class="tgt-ring"/>
+      <circle cx="80" cy="50" r="14" class="tgt-ring"/>
+      <circle cx="80" cy="50" r="4" class="tgt-bull"/>
+      <circle cx="108" cy="28" r="3.5" class="tgt-dart"/><circle cx="114" cy="32" r="3.5" class="tgt-dart"/>
+      <circle cx="110" cy="36" r="3.5" class="tgt-dart"/><circle cx="116" cy="28" r="3.5" class="tgt-dart"/>
+      <text x="4" y="14" class="mini-label">靶心=准</text>
+      <text x="100" y="98" class="mini-note">扎堆=精≠准</text>
+    </svg>`;
+    return diagramSplit(
+      "图18-7 准确度低但精确度高",
+      visual,
+      [
+        "准确度：估得对不对，接近真值（打中靶心）",
+        "精确度：估得细不细、是否一致（扎堆）",
+        "可很精确却不准：小数位多或很一致，但仍偏",
+      ],
+      "规划估算 · 考点认图"
+    );
+  }
+
+  function diagramLeadLag() {
+    const visual = `<svg class="mini-svg leadlag-svg" viewBox="0 0 160 100" aria-hidden="true">
+      <line x1="16" y1="70" x2="148" y2="70" class="axis"/>
+      <text x="120" y="84" class="mini-note">时间 →</text>
+      <circle cx="48" cy="48" r="10" class="ll-lead"/>
+      <text x="28" y="30" class="mini-label">提前</text>
+      <text x="22" y="96" class="mini-note">预判·可早干预</text>
+      <line x1="60" y1="52" x2="100" y2="58" class="ll-arrow"/>
+      <polygon points="100,54 110,58 100,62" class="ll-arrow-head"/>
+      <circle cx="118" cy="58" r="10" class="ll-lag"/>
+      <text x="100" y="42" class="mini-label">滞后</text>
+      <text x="92" y="96" class="mini-note">事后结果</text>
+    </svg>`;
+    return diagramSplit(
+      "提前指标 vs 滞后指标",
+      visual,
+      [
+        "提前：预判趋势（待办量、未管理风险、在制品）→ 早干预",
+        "滞后：事后结果（实际成本、进度偏差）→ 更好测",
+        "二者搭配：滞后看结果，提前防恶化",
+      ],
+      "度量指标 · 理解认图"
+    );
+  }
+
+  function diagramBurnCharts() {
+    const visual = `<svg class="mini-svg burn-svg" viewBox="0 0 160 100" aria-hidden="true">
+      <line x1="8" y1="48" x2="152" y2="48" class="burn-div"/>
+      <text x="10" y="12" class="mini-label">燃尽 · 剩余↓</text>
+      <polyline points="14,18 50,28 90,38 140,42" class="burn-down"/>
+      <text x="10" y="62" class="mini-label">燃起 · 完成↑</text>
+      <polyline points="14,88 50,78 90,68 140,58" class="burn-up"/>
+      <text x="118" y="98" class="mini-note">时间 →</text>
+    </svg>`;
+    return diagramSplit(
+      "燃尽图 vs 燃起图",
+      visual,
+      [
+        "燃尽：跟踪剩余工作，曲线向下",
+        "燃起：跟踪已完成工作，曲线向上",
+        "斜率可反映速度；卷面认图必背",
+      ],
+      "度量展示 · 考点认图"
+    );
+  }
+
+  function diagramTaskBoard() {
+    const visual = `<div class="task-board" aria-hidden="true">
+      <div class="tb-col"><span class="tb-h">待办</span><i></i><i></i><i></i></div>
+      <div class="tb-col"><span class="tb-h">进行中</span><i></i><i></i></div>
+      <div class="tb-col"><span class="tb-h">完成</span><i></i><i></i><i></i><i></i></div>
+    </div>`;
+    return diagramSplit(
+      "任务板（看板）",
+      visual,
+      [
+        "列：待办 → 进行中 → 完成（可裁剪）",
+        "可视化在制品与流动；拉动式推进",
+        "适应型交付 / 度量展示常一起考",
+      ],
+      "度量展示 · 考点认图"
+    );
+  }
+
   function diagramHtml(id) {
     if (!id) return "";
     const map = {
@@ -345,7 +432,11 @@
       "dev-spectrum": diagramDevSpectrum,
       "iter-incr": diagramIterIncr,
       "uncertainty-cone": diagramUncertaintyCone,
+      "accuracy-precision": diagramAccuracyPrecision,
       "change-cost-curve": diagramChangeCostCurve,
+      "lead-lag": diagramLeadLag,
+      "burn-charts": diagramBurnCharts,
+      "task-board": diagramTaskBoard,
     };
     const fn = map[id];
     if (!fn) return "";
@@ -380,9 +471,13 @@
 
   const CIRCLES = "①②③④⑤⑥⑦⑧⑨⑩";
 
-  function pairsHtml(pairs) {
+  function pairsHtml(pairs, lead) {
+    const leadHtml = lead
+      ? `<p class="pair-lead">${highlight(lead)}</p>`
+      : "";
     return `<div class="pair-list">
       <h3 class="box-title pair-heading">预期目标 ↔ 效果检查 <span class="badge">对照背</span></h3>
+      ${leadHtml}
       <div class="pair-table-head" aria-hidden="true">
         <span>预期目标</span>
         <span></span>
@@ -443,7 +538,7 @@
     const usePairs =
       state.module === "perf" && item.pairs && item.pairs.length;
     const topBlock = usePairs
-      ? pairsHtml(item.pairs)
+      ? pairsHtml(item.pairs, item.pairsLead)
       : dualBoxHtml(item, cfg);
     const sections = (item.sections || [])
       .map((s, i) => sectionHtml(s, i))
