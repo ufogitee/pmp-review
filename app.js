@@ -598,11 +598,47 @@
     }
   }
 
+  const VALID_MODES = new Set(["overview", "collapse", "quiz"]);
+  let applyingHash = false;
+
+  function parseHash() {
+    const raw = location.hash.replace(/^#/, "").trim();
+    if (!raw) return null;
+    const [moduleId, itemId, modePart] = raw.split("/").filter(Boolean);
+    if (!MODULES[moduleId] || !itemId) return null;
+    const list = MODULES[moduleId].list();
+    if (!list.find((d) => d.id === itemId)) return null;
+    const mode = VALID_MODES.has(modePart) ? modePart : "overview";
+    return { module: moduleId, itemId, mode };
+  }
+
+  function applyHash() {
+    const parsed = parseHash();
+    if (!parsed) return false;
+    applyingHash = true;
+    state.module = parsed.module;
+    state.itemId = parsed.itemId;
+    state.mode = parsed.mode;
+    applyingHash = false;
+    return true;
+  }
+
+  function syncHash() {
+    if (applyingHash) return;
+    ensureItemId();
+    if (!state.itemId) return;
+    const next = `#${state.module}/${state.itemId}/${state.mode}`;
+    if (location.hash !== next) {
+      history.replaceState(null, "", next);
+    }
+  }
+
   function refresh() {
     ensureItemId();
     updateModuleUi();
     renderNav();
     renderMain();
+    syncHash();
   }
 
   function setModule(moduleId) {
@@ -618,11 +654,14 @@
     state.itemId = id;
     renderNav();
     renderMain();
+    syncHash();
   }
 
   function setMode(mode) {
+    if (!VALID_MODES.has(mode)) return;
     state.mode = mode;
     applyModeClass();
+    syncHash();
   }
 
   // Events
@@ -707,7 +746,12 @@
       }
       renderNav();
       renderMain();
+      syncHash();
     }, 120);
+  });
+
+  window.addEventListener("hashchange", () => {
+    if (applyHash()) refresh();
   });
 
   document.addEventListener("keydown", (e) => {
@@ -738,7 +782,8 @@
     if (e.key === "e" || e.key === "E") setMode("quiz");
   });
 
-  // Init
+  // Init：有 hash 则恢复位置，否则写默认 hash
+  applyHash();
   ensureItemId();
   refresh();
 })();
