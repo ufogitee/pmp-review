@@ -186,6 +186,7 @@ window.HR_PARTS = [
       },
       {
         title: "图23-1 工作特征模型",
+        diagram: "job-characteristics",
         blocks: [
           {
             label: "工作特征",
@@ -258,6 +259,7 @@ window.HR_PARTS = [
     sections: [
       {
         title: "图23-2 战略性人力资源管理过程",
+        diagram: "hr-strategy",
         blocks: [
           {
             label: "制定",
@@ -568,6 +570,7 @@ window.HR_PARTS = [
       },
       {
         title: "图23-3 前瞻性培训需求分析",
+        diagram: "training-need",
         blocks: [
           {
             items: [
@@ -583,6 +586,7 @@ window.HR_PARTS = [
       },
       {
         title: "图23-4 培训迁移过程",
+        diagram: "training-transfer",
         blocks: [
           {
             label: "三个输入",
@@ -653,6 +657,7 @@ window.HR_PARTS = [
     sections: [
       {
         title: "图23-5 员工薪酬构成",
+        diagram: "pay-structure",
         blocks: [
           {
             label: "外在 / 内在",

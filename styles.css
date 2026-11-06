@@ -529,6 +529,54 @@ button {
   margin-top: 3px;
 }
 
+.diagram-flow .flow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.flow-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.flow-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.flow-box {
+  flex: 1 1 140px;
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+}
+
+.flow-box b {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 12px;
+}
+
+.flow-box span {
+  display: block;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+.flow-arrow {
+  align-self: center;
+  color: var(--teal);
+  font-weight: 700;
+}
+
 .eq-grid {
   display: grid;
   grid-template-columns: 28px 1fr 1fr;
@@ -810,6 +858,10 @@ button {
 
   .diagram-visual {
     max-height: 120px;
+  }
+
+  .diagram-flow .flow-arrow {
+    display: none;
   }
 
   .diagram-points {

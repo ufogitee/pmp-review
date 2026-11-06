@@ -489,6 +489,106 @@
     );
   }
 
+  function diagramFlow(caption, visual, hint) {
+    return `<figure class="diagram diagram-flow">
+      <figcaption>${caption}</figcaption>
+      ${hint ? `<p class="diagram-hint">${hint}</p>` : ""}
+      <div class="flow">${visual}</div>
+    </figure>`;
+  }
+
+  function flowBox(title, text) {
+    return `<div class="flow-box"><b>${title}</b><span>${text}</span></div>`;
+  }
+
+  function diagramJobCharacteristics() {
+    return diagramFlow(
+      "图23-1 工作特征模型",
+      `<div class="flow-row">
+        ${flowBox("工作特征", "技能多样化 · 工作整体性 · 工作重要性 · 工作自主性 · 反馈")}
+        <span class="flow-arrow" aria-hidden="true">→</span>
+        ${flowBox("关键心理状态", "感受到工作的意义 · 感受到对结果的责任 · 了解工作结果")}
+        <span class="flow-arrow" aria-hidden="true">→</span>
+        ${flowBox("个人和工作结果", "内在工作动力 · 工作绩效 · 工作满意度 · 低缺勤率和离职率")}
+      </div>`,
+      "员工的成长需要会调节后两段的强弱。做法：任务合并、构造自然工作单位、建立客户关系、纵向分配工作、建立反馈渠道。"
+    );
+  }
+
+  function diagramHrStrategy() {
+    return diagramFlow(
+      "图23-2 战略性人力资源管理过程",
+      `<div class="flow-stack">
+        <div class="flow-row">
+          ${flowBox("制定", "组织文化、绩效和目标 → 战略方向 → 战略选择")}
+          <span class="flow-arrow" aria-hidden="true">→</span>
+          ${flowBox("执行", "招聘甄选 · 薪酬体系 · 配置（薪酬福利、工作设计、绩效管理、培训开发）")}
+        </div>
+        <div class="flow-row">
+          ${flowBox("人怎么进来", "申请者 → 招聘 → 人力资源 → 组织环境")}
+          <span class="flow-arrow" aria-hidden="true">→</span>
+          ${flowBox("绩效怎么传", "人力资源绩效 → 组织绩效 → 财务绩效、资本市场绩效")}
+        </div>
+      </div>`,
+      "其他职能的资源和投入进入组织绩效。外部股东连着财务绩效和资本市场绩效。再用人力资源绩效、组织绩效、财务绩效做评估和反馈。"
+    );
+  }
+
+  function diagramTrainingNeed() {
+    return diagramFlow(
+      "图23-3 前瞻性培训需求分析",
+      `<div class="flow-stack">
+        <div class="flow-row">
+          ${flowBox("当前", "绩效已经令人满意，仍可能需要培训")}
+          <span class="flow-arrow" aria-hidden="true">→</span>
+          ${flowBox("三条来源", "为工作调动做准备 · 工作要求变化 · 为晋升做准备")}
+          <span class="flow-arrow" aria-hidden="true">→</span>
+          ${flowBox("再看技能", "汇入预期的工作技能要求")}
+        </div>
+        <div class="flow-row">
+          ${flowBox("充分", "回到满意的工作绩效")}
+          ${flowBox("不充分", "培训解决方案，或非培训解决方案")}
+        </div>
+      </div>`,
+      "还可沿职业发展通道，用学习地图、领导梯队模型做前瞻性分析。"
+    );
+  }
+
+  function diagramTrainingTransfer() {
+    return diagramFlow(
+      "图23-4 培训迁移过程",
+      `<div class="flow-stack">
+        <div class="flow-row">
+          ${flowBox("受训者特征", "能力 · 个性 · 动机")}
+          ${flowBox("培训设计", "学习目的 · 材料 · 实践 · 反馈 · 场地")}
+          ${flowBox("工作环境", "主管和同事支持 · 执行机会 · 技术支持 · 转化氛围")}
+        </div>
+        <div class="flow-row">
+          <span class="flow-arrow" aria-hidden="true">↓</span>
+          ${flowBox("结果", "学习保存 · 推广维持")}
+        </div>
+      </div>`,
+      "不能转到工作中，或不能维持，培训价值就很小。"
+    );
+  }
+
+  function diagramPayStructure() {
+    return diagramFlow(
+      "图23-5 员工薪酬构成",
+      `<div class="flow-stack">
+        <div class="flow-row">
+          ${flowBox("外在报酬", "通常说的薪酬，以货币收入为主")}
+          ${flowBox("内在报酬", "不发钱：工作保障、身份、挑战性工作、晋升、认可、培训、弹性工时、办公条件")}
+        </div>
+        <div class="flow-row">
+          ${flowBox("直接报酬", "基本薪酬 · 绩效加薪 · 激励薪酬 · 延期支付")}
+          ${flowBox("间接报酬", "保护项目 · 非工作报酬 · 服务与津贴")}
+        </div>
+      </div>`,
+      "延期支付算直接报酬。福利、带薪休假、服务与津贴还受法规和市场竞争影响。"
+    );
+  }
+
   function diagramHtml(id) {
     if (!id) return "";
     const map = {
@@ -502,6 +602,11 @@
       "lead-lag": diagramLeadLag,
       "burn-charts": diagramBurnCharts,
       "task-board": diagramTaskBoard,
+      "job-characteristics": diagramJobCharacteristics,
+      "hr-strategy": diagramHrStrategy,
+      "training-need": diagramTrainingNeed,
+      "training-transfer": diagramTrainingTransfer,
+      "pay-structure": diagramPayStructure,
     };
     const fn = map[id];
     if (!fn) return "";
