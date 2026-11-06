@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="软考高项 · 十大知识域与八大绩效域紧凑复习板" />
+    <meta name="description" content="软考高项 · 十大知识域、八大绩效域与组织通用管理紧凑复习板" />
     <title>高项复习板</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -18,7 +18,7 @@
       <header class="topbar">
         <div class="brand">
           <h1>高项复习板</h1>
-          <div class="sub">软考高项 · 知识域 / 绩效域 · 一屏紧凑背诵</div>
+          <div class="sub">软考高项 · 知识域 / 绩效域 / 组织通用 · 一屏紧凑背诵</div>
           <div class="mnemonic-row">
             <span class="mnemonic" id="mnemonic"></span>
             <span class="mnemonic-note" id="mnemonic-note"></span>
@@ -28,6 +28,7 @@
           <div class="module-switch" role="tablist" aria-label="模块切换">
             <button type="button" class="module-btn active" data-module="ka">知识域</button>
             <button type="button" class="module-btn" data-module="perf">绩效域</button>
+            <button type="button" class="module-btn" data-module="org">组织</button>
           </div>
           <button type="button" class="mode-btn active" data-mode="overview">总览</button>
           <button type="button" class="mode-btn" data-mode="collapse">折叠</button>
@@ -47,14 +48,38 @@
       <p class="search-empty hidden" id="search-empty">当前模块无匹配，可切换另一模块再搜</p>
 
       <footer class="footer">
-        <kbd>S</kbd> 知识域 · <kbd>A</kbd> 绩效域 ·
+        <kbd>S</kbd> 知识域 · <kbd>A</kbd> 绩效域 · <kbd>H</kbd> 组织 ·
         <kbd>1</kbd>–<kbd>0</kbd> 切换条目 ·
         <kbd>Q</kbd> 总览 · <kbd>W</kbd> 折叠 · <kbd>E</kbd> 自测
       </footer>
     </div>
 
+    <div class="hello-pop" id="hello-pop" role="dialog" aria-modal="true" aria-labelledby="hello-pop-text">
+      <div class="hello-card">
+        <p id="hello-pop-text">袁小玫，过来亲一下。</p>
+        <button type="button" class="hello-ok" id="hello-ok">亲一下</button>
+      </div>
+    </div>
+
     <script src="data.js"></script>
     <script src="knowledge-areas.js"></script>
+    <script src="hr.js"></script>
     <script src="app.js"></script>
+    <script>
+      (function () {
+        var pop = document.getElementById("hello-pop");
+        var ok = document.getElementById("hello-ok");
+        function closePop() {
+          pop.classList.add("is-gone");
+        }
+        ok.addEventListener("click", closePop);
+        pop.addEventListener("click", function (e) {
+          if (e.target === pop) closePop();
+        });
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") closePop();
+        });
+      })();
+    </script>
   </body>
 </html>

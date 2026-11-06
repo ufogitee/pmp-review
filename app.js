@@ -20,6 +20,15 @@
       boxLeft: { title: "过程清单", badge: "ITTO骨架" },
       boxRight: { title: "必背要点", badge: "公式/易混" },
     },
+    org: {
+      id: "org",
+      list: () => window.ORG_DATA || [],
+      mnemonic: () => window.ORG_MNEMONIC || "",
+      mnemonicNote: () => window.ORG_MNEMONIC_NOTE || "",
+      shortLabel: (name) => name,
+      boxLeft: { title: "结构脉络", badge: "框架" },
+      boxRight: { title: "必背要点", badge: "圈注" },
+    },
   };
 
   const state = {
@@ -604,7 +613,11 @@
   function parseHash() {
     const raw = location.hash.replace(/^#/, "").trim();
     if (!raw) return null;
-    const [moduleId, itemId, modePart] = raw.split("/").filter(Boolean);
+    let [moduleId, itemId, modePart] = raw.split("/").filter(Boolean);
+    if (moduleId === "hr") moduleId = "org";
+    if (moduleId === "org" && ["base", "job", "strategy", "recruit", "train", "pay"].includes(itemId)) {
+      itemId = "hr";
+    }
     if (!MODULES[moduleId] || !itemId) return null;
     const list = MODULES[moduleId].list();
     if (!list.find((d) => d.id === itemId)) return null;
@@ -763,6 +776,10 @@
     }
     if (e.key === "s" || e.key === "S") {
       setModule("ka");
+      return;
+    }
+    if (e.key === "h" || e.key === "H") {
+      setModule("org");
       return;
     }
 
