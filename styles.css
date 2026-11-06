@@ -203,8 +203,47 @@ button {
   grid-template-columns: repeat(10, 1fr);
 }
 
+.domain-nav[data-module="gov"] {
+  grid-template-columns: repeat(3, 1fr);
+}
+
 .domain-nav[data-module="org"] {
   grid-template-columns: repeat(4, 1fr);
+}
+
+.sub-nav {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin: -6px 0 14px;
+}
+
+.sub-nav.hidden {
+  display: none !important;
+}
+
+.sub-tab {
+  padding: 8px 6px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--paper);
+  text-align: center;
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ink);
+  white-space: normal;
+}
+
+.sub-tab:hover {
+  border-color: var(--teal);
+}
+
+.sub-tab.active {
+  background: var(--teal-soft);
+  border-color: var(--teal);
+  color: var(--teal);
 }
 
 .search-empty {
@@ -1190,7 +1229,15 @@ mark {
     grid-template-columns: repeat(5, 1fr);
   }
 
+  .domain-nav[data-module="gov"] {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
   .domain-nav[data-module="org"] {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .sub-nav {
     grid-template-columns: repeat(4, 1fr);
   }
 
@@ -1221,7 +1268,15 @@ mark {
     grid-template-columns: repeat(5, 1fr);
   }
 
+  .domain-nav[data-module="gov"] {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
   .domain-nav[data-module="org"] {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .sub-nav {
     grid-template-columns: repeat(4, 1fr);
   }
 

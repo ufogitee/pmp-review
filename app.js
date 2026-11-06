@@ -20,12 +20,21 @@
       boxLeft: { title: "过程清单", badge: "ITTO骨架" },
       boxRight: { title: "必背要点", badge: "公式/易混" },
     },
+    gov: {
+      id: "gov",
+      list: () => window.GOV_DATA || [],
+      mnemonic: () => window.GOV_MNEMONIC || "",
+      mnemonicNote: () => window.GOV_MNEMONIC_NOTE || "",
+      shortLabel: (name) => name.replace(/^组织/, ""),
+      boxLeft: { title: "结构脉络", badge: "框架" },
+      boxRight: { title: "必背要点", badge: "圈注" },
+    },
     org: {
       id: "org",
       list: () => window.ORG_DATA || [],
       mnemonic: () => window.ORG_MNEMONIC || "",
       mnemonicNote: () => window.ORG_MNEMONIC_NOTE || "",
-      shortLabel: (name) => name,
+      shortLabel: (name) => name.replace(/^组织/, ""),
       boxLeft: { title: "结构脉络", badge: "框架" },
       boxRight: { title: "必背要点", badge: "圈注" },
     },
@@ -34,11 +43,13 @@
   const state = {
     module: "ka",
     itemId: null,
+    partId: null,
     mode: "overview",
     query: "",
   };
 
   const $nav = document.getElementById("domain-nav");
+  const $subNav = document.getElementById("sub-nav");
   const $main = document.getElementById("main");
   const $modes = document.querySelectorAll("[data-mode]");
   const $moduleBtns = document.querySelectorAll(".module-btn");
@@ -82,6 +93,32 @@
     const q = state.query.trim().toLowerCase();
     if (!q) return true;
     return JSON.stringify(item).toLowerCase().includes(q);
+  }
+
+  function partsOf(item) {
+    return item && Array.isArray(item.parts) ? item.parts : [];
+  }
+
+  function currentItem() {
+    return currentList().find((d) => d.id === state.itemId) || currentList()[0];
+  }
+
+  function partMatches(part) {
+    const q = state.query.trim().toLowerCase();
+    if (!q) return true;
+    return JSON.stringify(part).toLowerCase().includes(q);
+  }
+
+  function ensurePartId() {
+    const parts = partsOf(currentItem());
+    if (!parts.length) {
+      state.partId = null;
+      return;
+    }
+    const current = parts.find((p) => p.id === state.partId);
+    if (current && partMatches(current)) return;
+    const matched = parts.filter(partMatches);
+    state.partId = (matched[0] || parts[0]).id;
   }
 
   function ensureItemId() {
@@ -132,6 +169,25 @@
           <span class="short">${escapeHtml(d.short)}</span>
           <span class="full">${escapeHtml(mod().shortLabel(d.name))}</span>
         </button>`;
+      })
+      .join("");
+    renderSubNav();
+  }
+
+  function renderSubNav() {
+    if (!$subNav) return;
+    ensurePartId();
+    const parts = partsOf(currentItem());
+    if (!parts.length) {
+      $subNav.classList.add("hidden");
+      $subNav.innerHTML = "";
+      return;
+    }
+    $subNav.classList.remove("hidden");
+    $subNav.innerHTML = parts
+      .map((p) => {
+        const active = p.id === state.partId ? " active" : "";
+        return `<button type="button" class="sub-tab${active}" data-part="${p.id}">${escapeHtml(p.name)}</button>`;
       })
       .join("");
   }
@@ -536,28 +592,32 @@
 
   function renderMain() {
     ensureItemId();
-    const list = currentList();
-    const item = list.find((d) => d.id === state.itemId) || list[0];
+    ensurePartId();
+    const item = currentItem();
     if (!item) {
       $main.innerHTML = `<p class="tip">暂无数据</p>`;
       return;
     }
+    const parts = partsOf(item);
+    const view = parts.length
+      ? parts.find((p) => p.id === state.partId) || parts[0]
+      : item;
 
     const cfg = mod();
     const usePairs =
-      state.module === "perf" && item.pairs && item.pairs.length;
+      state.module === "perf" && view.pairs && view.pairs.length;
     const topBlock = usePairs
-      ? pairsHtml(item.pairs, item.pairsLead)
-      : dualBoxHtml(item, cfg);
-    const sections = (item.sections || [])
+      ? pairsHtml(view.pairs, view.pairsLead)
+      : dualBoxHtml(view, cfg);
+    const sections = (view.sections || [])
       .map((s, i) => sectionHtml(s, i))
       .join("");
 
     $main.innerHTML = `
       <header class="domain-head">
-        <h2>${highlight(item.name)}</h2>
-        <span class="en">${escapeHtml(item.en || "")}</span>
-        <p class="tip">${highlight(item.tip || "")}</p>
+        <h2>${highlight(view.name)}</h2>
+        <span class="en">${escapeHtml(view.en || "")}</span>
+        <p class="tip">${highlight(view.tip || "")}</p>
       </header>
       ${topBlock}
       ${sections}
@@ -613,16 +673,35 @@
   function parseHash() {
     const raw = location.hash.replace(/^#/, "").trim();
     if (!raw) return null;
-    let [moduleId, itemId, modePart] = raw.split("/").filter(Boolean);
-    if (moduleId === "hr") moduleId = "org";
-    if (moduleId === "org" && ["base", "job", "strategy", "recruit", "train", "pay"].includes(itemId)) {
+    const segs = raw.split("/").filter(Boolean);
+    let moduleId = segs[0];
+    let itemId = segs[1];
+    let rest = segs.slice(2);
+    if (moduleId === "hr") {
+      moduleId = "org";
+      rest = itemId ? [itemId, ...rest] : rest;
       itemId = "hr";
     }
     if (!MODULES[moduleId] || !itemId) return null;
     const list = MODULES[moduleId].list();
-    if (!list.find((d) => d.id === itemId)) return null;
-    const mode = VALID_MODES.has(modePart) ? modePart : "overview";
-    return { module: moduleId, itemId, mode };
+    const hr = list.find((d) => d.id === "hr");
+    const hrPartIds = new Set(partsOf(hr).map((p) => p.id));
+    if (moduleId === "org" && hrPartIds.has(itemId)) {
+      rest = [itemId, ...rest];
+      itemId = "hr";
+    }
+    const item = list.find((d) => d.id === itemId);
+    if (!item) return null;
+    const partIds = new Set(partsOf(item).map((p) => p.id));
+    let partId = null;
+    let mode = "overview";
+    if (rest[0] && partIds.has(rest[0])) {
+      partId = rest[0];
+      if (VALID_MODES.has(rest[1])) mode = rest[1];
+    } else if (VALID_MODES.has(rest[0])) {
+      mode = rest[0];
+    }
+    return { module: moduleId, itemId, partId, mode };
   }
 
   function applyHash() {
@@ -631,6 +710,7 @@
     applyingHash = true;
     state.module = parsed.module;
     state.itemId = parsed.itemId;
+    state.partId = parsed.partId;
     state.mode = parsed.mode;
     applyingHash = false;
     return true;
@@ -639,8 +719,10 @@
   function syncHash() {
     if (applyingHash) return;
     ensureItemId();
+    ensurePartId();
     if (!state.itemId) return;
-    const next = `#${state.module}/${state.itemId}/${state.mode}`;
+    const partSeg = state.partId ? `/${state.partId}` : "";
+    const next = `#${state.module}/${state.itemId}${partSeg}/${state.mode}`;
     if (location.hash !== next) {
       history.replaceState(null, "", next);
     }
@@ -658,14 +740,25 @@
     if (!MODULES[moduleId] || state.module === moduleId) return;
     state.module = moduleId;
     state.itemId = null;
+    state.partId = null;
     state.query = "";
     if ($search) $search.value = "";
     refresh();
   }
 
   function setItem(id) {
+    if (id === state.itemId) return;
     state.itemId = id;
+    state.partId = null;
     renderNav();
+    renderMain();
+    syncHash();
+  }
+
+  function setPart(id) {
+    if (id === state.partId) return;
+    state.partId = id;
+    renderSubNav();
     renderMain();
     syncHash();
   }
@@ -683,6 +776,14 @@
     if (!tab) return;
     setItem(tab.dataset.id);
   });
+
+  if ($subNav) {
+    $subNav.addEventListener("click", (e) => {
+      const tab = e.target.closest("[data-part]");
+      if (!tab) return;
+      setPart(tab.dataset.part);
+    });
+  }
 
   $moduleBtns.forEach((btn) => {
     btn.addEventListener("click", () => setModule(btn.dataset.module));
@@ -756,6 +857,7 @@
       const matched = currentList().filter(matchQuery);
       if (matched.length && !matched.find((d) => d.id === state.itemId)) {
         state.itemId = matched[0].id;
+        state.partId = null;
       }
       renderNav();
       renderMain();
@@ -778,14 +880,23 @@
       setModule("ka");
       return;
     }
+    if (e.key === "g" || e.key === "G") {
+      setModule("gov");
+      return;
+    }
     if (e.key === "h" || e.key === "H") {
       setModule("org");
       return;
     }
 
-    // 1-9 and 0 (10th) switch items in current module
+    // 在带小节的条目里，1–7 切换小节；否则 1–9 切换当前模块条目
     if (e.key >= "1" && e.key <= "9") {
       const idx = Number(e.key) - 1;
+      const parts = partsOf(currentItem());
+      if (parts.length && parts[idx]) {
+        setPart(parts[idx].id);
+        return;
+      }
       const list = currentList();
       if (list[idx]) setItem(list[idx].id);
     }
